@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sol Treasure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0d0d0d;
+            color: #ff00ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            position: relative;
+            color: #ff00ff;
+            animation: glitch 1s infinite;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #ff99ff;
+        }
+
+        /* Container Styles */
+        .container {
+            background-color: rgba(20, 20, 20, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s;
+        }
+
+        /* Input and Button Styles */
+        input {
+            background-color: #1a1a1a;
+            color: #ff00ff;
+            border: 2px solid #ff00ff;
+            border-radius: 5px;
+            padding: 12px;
+            font-size: 1em;
+            width: 80%;
+            margin-bottom: 20px;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+
+        input:focus {
+            border-color: #ff66ff;
+            outline: none;
+            transform: scale(1.02);
+        }
+
+        button {
+            background-color: #ff00ff;
+            color: #0d0d0d;
+            padding: 12px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 60%;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background-color: #ff66ff;
+            transform: translateY(-2px);
+        }
+
+        /* Glitch Effect */
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
+            }
+            20% {
+                text-shadow: -2px -2px #ff00ff, 2px 2px #00ffff;
+            }
+            40% {
+                text-shadow: 2px -2px #ff00ff, -2px 2px #00ffff;
+            }
+            60% {
+                text-shadow: -2px 2px #ff00ff, 2px -2px #00ffff;
+            }
+            80% {
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
+            }
+            100% {
+                text-shadow: -2px -2px #ff00ff, 2px 2px #00ffff;
+            }
+        }
+
+        /* Background Glitch Animation */
+        .glitch-bg {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            animation: moveBackground 10s linear infinite;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                transform: rotate(0deg) translate(0, 0);
+            }
+            50% {
+                transform: rotate(360deg) translate(50px, 50px);
+            }
+            100% {
+                transform: rotate(720deg) translate(0, 0);
+            }
+        }
+
+        /* Particle Animation */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 0, 255, 0.7);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 8s linear infinite;
+        }
+
+        /* Generate random positions and sizes for particles */
+        /* Using CSS variables for flexibility */
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-100px) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+        }
+
+        /* Trivia Quiz Styles */
+        .quiz-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .question {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #ff66ff;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .option {
+            background-color: #1a1a1a;
+            color: #ff00ff;
+            border: 2px solid #ff00ff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 5px 0;
+            width: 100%;
+            max-width: 300px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .option:hover {
+            background-color: #ff66ff;
+            transform: scale(1.05);
+            color: #0d0d0d;
+        }
+
+        /* Raffle Styles */
+        .raffle-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .raffle-number {
+            font-size: 4em;
+            color: #ff66ff;
+            margin-bottom: 20px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .raffle-message {
+            font-size: 1.5em;
+            color: #00ffff;
+        }
+
+        /* Prize Details Styles */
+        .prize-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px #ff00ff;
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px #ff66ff;
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px #ff00ff;
+            }
+        }
+
+        .prize-container h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            animation: glitch 1s infinite;
+        }
+
+        .prize-details {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ff99ff;
+            display: none; /* Hidden initially */
+        }
+
+        .prize-details a {
+            color: #ff66ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .prize-details a:hover {
+            text-decoration: underline;
+        }
+
+        /* Button Specific Styles */
+        .hidden {
+            display: none;
+        }
+
+        /* Confetti Styles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff00ff;
+            opacity: 0.8;
+            transform: rotate(45deg);
+            animation: confetti-fall 3s forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                top: -10%;
+                left: calc(50% - 5px);
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+            }
+            100% {
+                top: 100%;
+                left: calc(50% + 100px);
+                opacity: 0;
+                transform: rotate(45deg) scale(0.5);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 30px;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            button {
+                width: 80%;
+            }
+
+            .option {
+                max-width: 100%;
+            }
+
+            #result-message, .raffle-number, .raffle-message, .prize-details {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Glitch Animation -->
+    <div class="glitch-bg"></div>
+
+    <!-- Particle Background -->
+    <div class="particles">
+        <!-- Generate multiple particles with random positions, sizes, and animation delays -->
+        <div class="particle" style="width: 8px; height: 8px; top: 10%; left: 20%; animation-duration: 7s; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 6px; height: 6px; top: 30%; left: 40%; animation-duration: 10s; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 10px; height: 10px; top: 50%; left: 60%; animation-duration: 12s; animation-delay: 4s;"></div>
+        <div class="particle" style="width: 5px; height: 5px; top: 70%; left: 80%; animation-duration: 9s; animation-delay: 1s;"></div>
+        <div class="particle" style="width: 7px; height: 7px; top: 20%; left: 70%; animation-duration: 8s; animation-delay: 3s;"></div>
+        <div class="particle" style="width: 9px; height: 9px; top: 40%; left: 10%; animation-duration: 11s; animation-delay: 5s;"></div>
+        <div class="particle" style="width: 6px; height: 6px; top: 60%; left: 30%; animation-duration: 10s; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 8px; height: 8px; top: 80%; left: 50%; animation-duration: 7s; animation-delay: 4s;"></div>
+        <div class="particle" style="width: 5px; height: 5px; top: 15%; left: 85%; animation-duration: 9s; animation-delay: 1s;"></div>
+        <div class="particle" style="width: 7px; height: 7px; top: 35%; left: 55%; animation-duration: 8s; animation-delay: 3s;"></div>
+    </div>
+
+    <!-- Wallet Input Container -->
+    <div class="container" id="wallet-container">
+        <h1>Sol Treasure</h1>
+        <p>Enter your Solana wallet to join the exclusive treasure pool!</p>
+        <input type="text" id="wallet" placeholder="Enter your Solana wallet address">
+        <button onclick="submitWallet()">Join Now</button>
+        <p style="margin-top: 15px; color: #ff66ff;">* Every participant is guaranteed a prize! *</p>
+    </div>
+
+    <!-- Trivia Quiz Container -->
+    <div class="container quiz-container" id="quiz-container">
+        <h1>Unlock Your Treasure</h1>
+        <p class="question" id="question">What is the capital of France?</p>
+        <div class="options" id="options">
+            <div class="option" onclick="selectOption('A')">A. Berlin</div>
+            <div class="option" onclick="selectOption('B')">B. Madrid</div>
+            <div class="option" onclick="selectOption('C')">C. Paris</div>
+            <div class="option" onclick="selectOption('D')">D. Rome</div>
+        </div>
+    </div>
+
+    <!-- Treasure Number and Raffle Button Container -->
+    <div class="container treasure-container hidden" id="treasure-container">
+        <h1>Your Treasure Number</h1>
+        <p id="treasure-number" style="font-size: 2em; color: #ff66ff;">#123</p>
+        <button onclick="startRaffle()">Get in the Raffle</button>
+    </div>
+
+    <!-- Raffle Container -->
+    <div class="container raffle-container" id="raffle-container">
+        <h1>Raffle Time!</h1>
+        <div class="raffle-number" id="raffle-number">1</div>
+        <div class="raffle-message">Drawing the winning number...</div>
+    </div>
+
+    <!-- Prize Details Container -->
+    <div class="container prize-container" id="prize-container">
+        <h1>🎉 Congratulations! 🎉</h1>
+        <p id="result-message">You have won 0.5 SOL!</p>
+        <button id="get-prize-button" onclick="displayPrizeDetails()">Get Your Prize</button>
+        <div class="prize-details">
+            <p>Additionally, you can receive another prize by contacting our <a href="https://twitter.com/YourXAccount" target="_blank">X Account</a>.</p>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container"></div>
+
+    <!-- Audio Element for Celebratory Sound -->
+    <audio id="celebration-sound" src="https://www.myinstants.com/media/sounds/party-horn.mp3" preload="auto"></audio>
+
+    <script>
+        let treasureNumber;
+        const correctAnswer = 'C';
+        let raffleInterval;
+
+        function submitWallet() {
+            const wallet = document.getElementById('wallet').value.trim();
+            const walletContainer = document.getElementById('wallet-container');
+            const quizContainer = document.getElementById('quiz-container');
+
+            // Simple Solana wallet address validation
+            if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(wallet)) {
+                walletContainer.style.display = 'none';
+                quizContainer.style.display = 'block';
+            } else {
+                alert('Please enter a valid Solana wallet address.');
+            }
+        }
+
+        function selectOption(selected) {
+            if (selected === correctAnswer) {
+                assignTreasureNumber();
+                showTreasureNumber();
+            } else {
+                alert('Incorrect answer. Please try again!');
+                resetQuiz();
+            }
+        }
+
+        function assignTreasureNumber() {
+            // Assign a random number between 1 and 400 as the treasure number
+            treasureNumber = Math.floor(Math.random() * 400) + 1;
+            console.log("Assigned Treasure Number:", treasureNumber); // For debugging purposes
+        }
+
+        function showTreasureNumber() {
+            const quizContainer = document.getElementById('quiz-container');
+            const treasureContainer = document.getElementById('treasure-container');
+            const treasureNumberElement = document.getElementById('treasure-number');
+
+            quizContainer.style.display = 'none';
+            treasureContainer.classList.remove('hidden');
+            treasureNumberElement.textContent = `#${treasureNumber}`;
+        }
+
+        function startRaffle() {
+            const treasureContainer = document.getElementById('treasure-container');
+            const raffleContainer = document.getElementById('raffle-container');
+            const raffleNumber = document.getElementById('raffle-number');
+
+            treasureContainer.style.display = 'none';
+            raffleContainer.style.display = 'block';
+
+            // Start the raffle animation: change number every 100ms
+            raffleInterval = setInterval(() => {
+                raffleNumber.textContent = Math.floor(Math.random() * 400) + 1;
+            }, 100); // Change number every 100ms
+
+            // Stop the raffle after 5 seconds and show the treasure number
+            setTimeout(() => {
+                clearInterval(raffleInterval);
+                raffleNumber.textContent = treasureNumber;
+                const raffleMessage = document.querySelector('.raffle-message');
+                raffleMessage.textContent = `🎉 Your treasure number (${treasureNumber}) is the winning number!`;
+
+                // Proceed to show the prize button after a brief pause
+                setTimeout(() => {
+                    raffleContainer.style.display = 'none';
+                    showPrizeButton();
+                }, 3000); // Show prize button after 3 seconds
+            }, 5000); // Raffle runs for 5 seconds
+        }
+
+        function showPrizeButton() {
+            const prizeContainer = document.getElementById('prize-container');
+            prizeContainer.style.display = 'block';
+        }
+
+        function displayPrizeDetails() {
+            const prizeDetails = document.querySelector('.prize-details');
+            prizeDetails.style.display = 'block';
+
+            // Play celebratory sound
+            const celebrationSound = document.getElementById('celebration-sound');
+            celebrationSound.play();
+
+            // Trigger confetti animation
+            triggerConfetti();
+
+            // Optionally, disable or hide the "Get Your Prize" button after clicking
+            const getPrizeButton = document.getElementById('get-prize-button');
+            getPrizeButton.disabled = true;
+            getPrizeButton.style.cursor = 'default';
+            getPrizeButton.style.opacity = '0.6';
+        }
+
+        function resetQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.style.display = 'none';
+            document.getElementById('wallet-container').style.display = 'block';
+        }
+
+        function triggerConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            const confettiCount = 100;
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                // Random positions across the screen
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                // Random colors
+                confetti.style.backgroundColor = getRandomColor();
+                // Random animations
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confettiContainer.appendChild(confetti);
+                // Remove confetti after animation completes
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff00ff', '#00ffff', '#ff66ff', '#ff99ff', '#66ff99', '#ffcc00'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
+</body>
+</html>
