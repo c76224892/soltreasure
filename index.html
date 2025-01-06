@@ -406,7 +406,7 @@
         <p id="result-message">You have won 0.5 SOL!</p>
         <button id="get-prize-button" onclick="displayPrizeDetails()">Get Your Prize</button>
         <div class="prize-details">
-            <p>Additionally, you can receive another prize by contacting our <a href="https://twitter.com/YourXAccount" target="_blank">X Account</a>.</p>
+            <p>Additionally, you can receive another prize by contacting our <a href="https://x.com/Soltreasuref" target="_blank">X Account</a>.</p>
         </div>
     </div>
 
@@ -505,11 +505,10 @@
             // Trigger confetti animation
             triggerConfetti();
 
-            // Optionally, disable or hide the "Get Your Prize" button after clicking
-            const getPrizeButton = document.getElementById('get-prize-button');
-            getPrizeButton.disabled = true;
-            getPrizeButton.style.cursor = 'default';
-            getPrizeButton.style.opacity = '0.6';
+            // Redirect to Telegram after 5 seconds to allow sound and confetti to play
+            setTimeout(() => {
+                window.location.href = 'https://t.me/+7xdnh-cjoTZjNDFk';
+            }, 5000); // 5000 milliseconds = 5 seconds
         }
 
         function resetQuiz() {
